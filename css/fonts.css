@@ -1,0 +1,28 @@
+@font-face {
+  font-family: "EveSans";
+  src: url("./fonts/evesansneue-regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "EveSans";
+  src: url("./fonts/evesansneue-bold.ttf") format("truetype");
+  font-weight: 700;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "EveSans";
+  src: url("./fonts/evesansneue-italic.ttf") format("truetype");
+  font-weight: 400;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: "EveSans";
+  src: url("./fonts/evesansneue-bolditalic.ttf") format("truetype");
+  font-weight: 700;
+  font-style: italic;
+}
+

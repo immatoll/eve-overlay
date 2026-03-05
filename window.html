@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="css/fonts.css">
+    <link rel="stylesheet" href="css/window.css">
+</head>
+
+<body>
+
+    <div class="resize-handle corner br" title="Resize"></div>
+    <div class="resize-triangle" aria-hidden="true"></div>
+
+    <div class="titlebar">
+        <div class="title" id="overlayTitle">Window</div>
+        <div class="windowButtons">
+            <svg class="windowBtn" onclick="minimize()" viewBox="0 0 24 24">
+                <rect x="4" y="11" width="16" height="2" fill="#cfd8dc" />
+            </svg>
+            <svg class="windowBtn" onclick="closeWin()" viewBox="0 0 24 24">
+                <line x1="5" y1="5" x2="19" y2="19" stroke="#cfd8dc" stroke-width="2" />
+                <line x1="19" y1="5" x2="5" y2="19" stroke="#cfd8dc" stroke-width="2" />
+            </svg>
+        </div>
+    </div>
+
+    <div class="content">
+        <iframe id="contentFrame" src="" style="width:100%; height:100%; border:none;"></iframe>
+    </div>
+
+    <script>
+        const { ipcRenderer } = require("electron")
+        const params = new URLSearchParams(window.location.search)
+        document.getElementById("overlayTitle").innerText = params.get("title") || "Window"
+        // Load the provided URL or fall back to the default map
+        const frame = document.getElementById('contentFrame')
+        frame.src = params.get('url') || 'https://www.silver-tribe.com'
+
+        function minimize() {
+            ipcRenderer.send("window:minimize")
+        }
+        function closeWin() {
+            ipcRenderer.send("window:close")
+        }
+    </script>
+
+    <script>
+        // Use IPC to ask the main process for current bounds and to set new bounds.
+        // Only the bottom-right handle is used for resizing now.
+
+        let isResizing = false
+        let startX = 0, startY = 0, startBounds = null
+
+        const brHandle = document.querySelector('.resize-handle.br')
+        if (brHandle) {
+            brHandle.addEventListener('mousedown', async (e) => {
+                e.preventDefault()
+                isResizing = true
+                startX = e.screenX
+                startY = e.screenY
+                startBounds = await ipcRenderer.invoke('window:getBounds')
+                // visually indicate active state
+                brHandle.style.opacity = '1'
+                // disable interactions inside the iframe while resizing so embedded pages don't steal mouse events
+                const frameDuring = document.getElementById('contentFrame')
+                if (frameDuring) frameDuring.style.pointerEvents = 'none'
+                // show resize cursor globally
+                document.body.style.cursor = 'nwse-resize'
+            })
+        }
+
+        window.addEventListener('mousemove', (e) => {
+            if (!isResizing || !startBounds) return
+
+            const dx = e.screenX - startX
+            const dy = e.screenY - startY
+
+            const newWidth = Math.max(200, Math.round(startBounds.width + dx))
+            const newHeight = Math.max(150, Math.round(startBounds.height + dy))
+
+            ipcRenderer.send('window:setBounds', { x: startBounds.x, y: startBounds.y, width: newWidth, height: newHeight })
+        })
+
+        window.addEventListener('mouseup', () => {
+            if (isResizing && brHandle) brHandle.style.opacity = ''
+            // restore iframe interaction and cursor
+            const frameAfter = document.getElementById('contentFrame')
+            if (frameAfter) frameAfter.style.pointerEvents = ''
+            document.body.style.cursor = ''
+            isResizing = false
+            startBounds = null
+        })
+    </script>
+
+</body>
+
+</html>

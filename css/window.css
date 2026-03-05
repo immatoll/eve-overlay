@@ -1,0 +1,109 @@
+html,
+body {
+    height: 100%;
+    overflow: hidden;
+}
+
+body {
+    margin: 0;
+    background: rgba(8, 12, 18, 0.92);
+    font-family: "EveSans", sans-serif;
+    color: #cfd8dc;
+}
+
+/* ===== TITLE BAR ===== */
+.titlebar {
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 8px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    -webkit-app-region: drag;
+}
+
+.title {
+    font-size: 13px;
+    letter-spacing: 0.4px;
+}
+
+.windowButtons {
+    display: flex;
+    gap: 6px;
+    -webkit-app-region: no-drag;
+}
+
+.windowBtn {
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+    opacity: 0.7;
+}
+
+.windowBtn:hover {
+    opacity: 1;
+}
+
+/* ===== CONTENT AREA ===== */
+.content {
+    position: absolute;
+    top: 32px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: 0;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+.content iframe {
+    display: block;
+    width: 100%;
+    height: 100%;
+    border: none;
+    overflow: hidden;
+}
+
+/* ===== RESIZING ===== */
+.resize-handle {
+    position: absolute;
+    background: transparent;
+    display: none;
+}
+
+.resize-handle.br {
+    display: block;
+    width: 18px;
+    height: 18px;
+    z-index: 200;
+    bottom: 0px;
+    right: 0px;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0.01));
+    cursor: nwse-resize;
+    box-sizing: border-box;
+    transition: transform .08s ease, box-shadow .08s ease;
+}
+
+.resize-handle.br:hover {
+    transform: scale(1.08);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.6);
+}
+
+/* A small triangle (size-grip) shown at bottom-right when hovering the handle */
+.resize-triangle {
+    width: 0;
+    height: 0;
+    border-left: 12px solid transparent;
+    border-top: 12px solid rgba(255, 255, 255, 0.12);
+    position: absolute;
+    bottom: 8px;
+    right: 8px;
+    pointer-events: none;
+    display: none;
+    z-index: 150;
+    transform: translate(4px, 4px);
+}
+
+.resize-handle.br:hover+.resize-triangle {
+    display: block
+}

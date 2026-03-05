@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="css/fonts.css">
+    <link rel="stylesheet" href="css/menu.css">
+</head>
+
+<body>
+
+    <div class="titlebar">
+
+        <div class="title">
+            SILVER.INTELLIGENCE
+        </div>
+
+        <div class="windowButtons">
+
+            <svg id="openCustomEditor" class="windowBtn" title="Add custom menu item" viewBox="0 0 24 24"
+                style="margin-left:6px;" xmlns="http://www.w3.org/2000/svg">
+                <rect x="11" y="4" width="2" height="16" fill="#cfd8dc" />
+                <rect x="4" y="11" width="16" height="2" fill="#cfd8dc" />
+            </svg>
+
+            <svg class="windowBtn" onclick="minimize()" viewBox="0 0 24 24">
+                <rect x="4" y="11" width="16" height="2" fill="#cfd8dc" />
+            </svg>
+
+
+            <svg class="windowBtn" onclick="closeWin()" viewBox="0 0 24 24">
+                <line x1="5" y1="5" x2="19" y2="19" stroke="#cfd8dc" stroke-width="2" />
+                <line x1="19" y1="5" x2="5" y2="19" stroke="#cfd8dc" stroke-width="2" />
+            </svg>
+
+        </div>
+
+    </div>
+
+    <div class="menu">
+        <div class="menuItem" onclick="openOverlay('SILVER STARMAP', 'https://silver-tribe.com/starmap', false)">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="10" r="3" />
+                <path d="M12 21.7C17.3 17 20 13 20 10a8 8 0 1 0-16 0c0 3 2.7 6.9 8 11.7z" />
+            </svg>
+            S.I. STARMAP
+        </div>
+        <div class="menuItem" onclick="openOverlay('SILVER STARMAP', 'https://silver-tribe.com/ssu', false)">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                <polyline points="9 22 9 12 15 12 15 22"></polyline>
+            </svg>
+            S.I. SSU FINDER
+        </div>
+        <hr>
+        <div class="menuItem" onclick="openOverlay('EF-MAP', 'https://ef-map.com/')">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="10" r="3" />
+                <path d="M12 21.7C17.3 17 20 13 20 10a8 8 0 1 0-16 0c0 3 2.7 6.9 8 11.7z" />
+            </svg>
+            EF-MAP (External)
+        </div>
+        <div class="menuItem" onclick="openOverlay('EVE|DATACORE', 'https://evedataco.re/explore/characters')">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect>
+                <rect x="9" y="9" width="6" height="6"></rect>
+                <line x1="9" y1="1" x2="9" y2="4"></line>
+                <line x1="15" y1="1" x2="15" y2="4"></line>
+                <line x1="9" y1="20" x2="9" y2="23"></line>
+                <line x1="15" y1="20" x2="15" y2="23"></line>
+                <line x1="20" y1="9" x2="23" y2="9"></line>
+                <line x1="20" y1="14" x2="23" y2="14"></line>
+                <line x1="1" y1="9" x2="4" y2="9"></line>
+                <line x1="1" y1="14" x2="4" y2="14"></line>
+            </svg>
+            EVE|DATACORE (External)
+        </div>
+        <div class="menuItem" onclick="openOverlay('Accluster Sniffer', 'https://accluster.net/ef/sniffer/')">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+                <path
+                    d="M2 16.1A5 5 0 0 1 5.9 20M2 12.05A9 9 0 0 1 9.95 20M2 8V6a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-6">
+                </path>
+                <line x1="2" y1="20" x2="2.01" y2="20"></line>
+            </svg>
+            Accluster Sniffer (External)
+        </div>
+        <div class="menuItem" onclick="openOverlay('Alpha Strike', 'https://frontier.alpha-strike.space/')">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="6" cy="6" r="3"></circle>
+                <circle cx="6" cy="18" r="3"></circle>
+                <line x1="20" y1="4" x2="8.12" y2="15.88"></line>
+                <line x1="14.47" y1="14.48" x2="20" y2="20"></line>
+                <line x1="8.12" y1="8.12" x2="12" y2="12"></line>
+            </svg>
+            Alpha Strike (External)
+        </div>
+    </div>
+
+    <!-- floating button removed; control moved into titlebar -->
+
+    <!-- Modal popup for adding custom menu items -->
+    <div id="customModal"
+        style="display:none; position:fixed; right:12px; bottom:48px; width:200px; background:rgba(6,10,14,0.96); border:1px solid rgba(255,255,255,0.04); padding:12px; border-radius:8px; z-index:60; box-shadow:0 8px 24px rgba(0,0,0,0.6)">
+        <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
+            <div style="font-size:13px; color:#9fb3c8;">Add custom menu item</div>
+            <button id="closeCustomModal"
+                style="background:transparent; border:none; color:#b8c7d3; cursor:pointer">✖</button>
+        </div>
+        <div style="display:flex; flex-direction:column; gap:8px;">
+            <input id="modalCustomName" placeholder="Name"
+                style="padding:8px; background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.04); color:inherit" />
+            <input id="modalCustomUrl" placeholder="https://..."
+                style="padding:8px; background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.04); color:inherit" />
+            <div style="display:flex; gap:8px; justify-content:flex-end;">
+                <button id="modalAddBtn"
+                    style="padding:6px 10px; background:#2b6b88; border:none; color:white; border-radius:6px; cursor:pointer">Add</button>
+                <button id="modalCancelBtn"
+                    style="padding:6px 10px; background:transparent; border:1px solid rgba(255,255,255,0.04); color:#b8c7d3; border-radius:6px; cursor:pointer">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        const { ipcRenderer } = require("electron")
+
+        function minimize() {
+            ipcRenderer.send("window:minimize")
+        }
+
+        function closeWin() {
+            ipcRenderer.send("window:close")
+        }
+
+        function openOverlay(title, url = "", isRemote = true) {
+            ipcRenderer.send("menu:openOverlay", { title, url, isRemote })
+        }
+
+        // --- Custom menu items API (persists to localStorage) ---
+        const CUSTOM_KEY = 'si_custom_menu'
+
+        function createMenuItemElement(item) {
+            const el = document.createElement('div')
+            el.className = 'menuItem'
+            el.innerHTML = `
+                <svg class="icon" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" fill="#cfd8dc" /></svg>
+                <span class="customLabel"></span>
+                <button class="removeBtn" title="Remove" style="margin-left:auto; background:transparent; border:none; color:rgba(255,255,255,0.5);">✖</button>
+            `
+            el.querySelector('.customLabel').textContent = item.name
+            el.addEventListener('click', (e) => {
+                // avoid triggering when clicking remove button
+                if (e.target && e.target.classList && e.target.classList.contains('removeBtn')) return
+                openOverlay(item.name, item.url, !!item.isRemote)
+            })
+            el.querySelector('.removeBtn').addEventListener('click', (ev) => {
+                ev.stopPropagation()
+                removeCustomItem(item.name, item.url)
+            })
+            return el
+        }
+
+        function loadCustomItems() {
+            try {
+                const raw = localStorage.getItem(CUSTOM_KEY)
+                return raw ? JSON.parse(raw) : []
+            } catch (e) { return [] }
+        }
+
+        function saveCustomItems(list) {
+            localStorage.setItem(CUSTOM_KEY, JSON.stringify(list || []))
+        }
+
+        function renderCustomItems() {
+            const list = loadCustomItems()
+            // insert before the custom UI area (find .menu and append)
+            const menu = document.querySelector('.menu')
+            // remove previous custom items (data-custom)
+            menu.querySelectorAll('[data-custom="1"]').forEach(n => n.remove())
+            list.forEach(item => {
+                const el = createMenuItemElement(item)
+                el.setAttribute('data-custom', '1')
+                menu.appendChild(el)
+            })
+        }
+
+        function addCustomItem(name, url, isRemote = true) {
+            if (!name || !url) return false
+            const list = loadCustomItems()
+            list.push({ name: String(name), url: String(url), isRemote: !!isRemote })
+            saveCustomItems(list)
+            renderCustomItems()
+            return true
+        }
+
+        function removeCustomItem(name, url) {
+            let list = loadCustomItems()
+            list = list.filter(i => !(i.name === name && i.url === url))
+            saveCustomItems(list)
+            renderCustomItems()
+        }
+
+        // wire the popup UI
+        document.addEventListener('DOMContentLoaded', () => {
+            renderCustomItems()
+            const openBtn = document.getElementById('openCustomEditor')
+            const modal = document.getElementById('customModal')
+            const closeModal = document.getElementById('closeCustomModal')
+            const cancelBtn = document.getElementById('modalCancelBtn')
+            const addBtn = document.getElementById('modalAddBtn')
+            const nameIn = document.getElementById('modalCustomName')
+            const urlIn = document.getElementById('modalCustomUrl')
+
+            function showModal() { modal.style.display = 'block'; nameIn.focus() }
+            function hideModal() { modal.style.display = 'none'; nameIn.value = ''; urlIn.value = '' }
+
+            if (openBtn) openBtn.addEventListener('click', showModal)
+            if (closeModal) closeModal.addEventListener('click', hideModal)
+            if (cancelBtn) cancelBtn.addEventListener('click', hideModal)
+
+            if (addBtn) addBtn.addEventListener('click', () => {
+                const name = nameIn.value.trim()
+                const url = urlIn.value.trim()
+                if (!name || !url) return
+                addCustomItem(name, url, url.startsWith('http'))
+                hideModal()
+            })
+        })
+    </script>
+
+</body>
+
+</html>
