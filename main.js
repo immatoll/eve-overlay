@@ -5,9 +5,9 @@ let menuWindow
 function createMenu(){
 
   menuWindow = new BrowserWindow({
-    width: 250,
-    height: 440,
-    minHeight: 440,
+    width: 210,
+    height: 360,
+    minHeight: 360,
     maxHeight: 840,
     frame: false,
     transparent: true,

@@ -32,7 +32,6 @@ body {
     font-weight: bold;
     letter-spacing: 1.5px;
     color: #9fb3c8;
-
 }
 
 .windowButtons {
@@ -74,6 +73,7 @@ body {
     background: rgba(255, 255, 255, 0.04);
     color: #ffffff;
 }
+.menu.dimmed { filter: brightness(.15); transition: filter 150ms ease; }
 
 .icon {
     width: 18px;

@@ -5,6 +5,102 @@
     <meta charset="UTF-8">
     <link rel="stylesheet" href="css/fonts.css">
     <link rel="stylesheet" href="css/menu.css">
+    <style>
+        /* Dim and disable interaction for the menu while modal is open */
+        .menu.dimmed {
+            filter: brightness(.15);
+            transition: filter 150ms ease;
+            pointer-events: none;
+            user-select: none;
+            opacity: 1;
+        }
+
+        /* Make the custom modal more visible and animated */
+        #customModal {
+            display: none;
+            position: fixed;
+            left: 10px;
+            top: 42px;
+            width: 165px;
+            background: rgba(12,16,20,0.98);
+            border: 1px solid rgba(60,140,180,0.14);
+            padding: 12px;
+            z-index: 120;
+            box-shadow: 0 18px 60px rgba(0,0,0,0.65), 0 0 18px rgba(60,140,180,0.08);
+            transform-origin: left top;
+            transform: translateY(-8px) scale(0.98);
+            opacity: 0;
+            transition: transform 160ms ease, opacity 160ms ease, box-shadow 160ms ease;
+        }
+
+        #customModal.open {
+            display: block;
+            transform: translateY(0) scale(1);
+            opacity: 1;
+            box-shadow: 0 26px 80px rgba(0,0,0,0.72), 0 0 28px rgba(60,140,180,0.12);
+        }
+
+        /* Accent the header and action button inside the modal for visibility */
+        #customModal > div:first-child { color: #bfe6ff }
+        #modalAddBtn { background: linear-gradient(180deg,#2b6b88,#1f556f) }
+            /* Styled checkbox matching modal inputs */
+            #modalIsRemote {
+                -webkit-appearance: none;
+                appearance: none;
+                width: 14px;
+                height: 14px;
+                border: 1px solid rgba(255,255,255,0.04);
+                background: rgba(255,255,255,0.02);
+                border-radius: 3px;
+                display: inline-block;
+                vertical-align: middle;
+                position: relative;
+                box-shadow: inset 0 1px 0 rgba(255,255,255,0.02);
+                cursor: pointer;
+            }
+
+            #modalIsRemote:focus { outline: 1px solid rgba(47,160,200,0.15) }
+
+            #modalIsRemote:checked {
+                background: linear-gradient(180deg,#2fa9d9,#176079);
+                border-color: rgba(40,120,160,0.9);
+                box-shadow: inset 0 1px 0 rgba(255,255,255,0.12);
+            }
+
+            /* no checkmark glyph — color indicates state */
+
+            /* Tooltip for informative labels */
+            .tooltip {
+                position: relative;
+                border-bottom: 1px dashed rgba(185,199,211,0.35);
+                cursor: help;
+                display: inline-block;
+            }
+
+            .tooltip .tooltiptext {
+                visibility: hidden;
+                opacity: 0;
+                position: absolute;
+                left: 0;
+                bottom: 125%;
+                transform: translateY(-6px);
+                background: rgba(6,10,14,0.95);
+                color: #cfe9f8;
+                padding: 6px 8px;
+                border-radius: 6px;
+                white-space: nowrap;
+                font-size: 11px;
+                box-shadow: 0 8px 30px rgba(0,0,0,0.6);
+                transition: opacity 120ms ease, transform 120ms ease;
+                z-index: 220;
+            }
+
+            .tooltip:hover .tooltiptext {
+                visibility: visible;
+                opacity: 1;
+                transform: translateY(0);
+            }
+    </style>
 </head>
 
 <body>
@@ -12,7 +108,7 @@
     <div class="titlebar">
 
         <div class="title">
-            SILVER.INTELLIGENCE
+            SILVER.OVERLAY
         </div>
 
         <div class="windowButtons">
@@ -44,7 +140,7 @@
                 <circle cx="12" cy="10" r="3" />
                 <path d="M12 21.7C17.3 17 20 13 20 10a8 8 0 1 0-16 0c0 3 2.7 6.9 8 11.7z" />
             </svg>
-            S.I. STARMAP
+            STARMAP
         </div>
         <div class="menuItem" onclick="openOverlay('SILVER STARMAP', 'https://silver-tribe.com/ssu', false)">
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
@@ -52,18 +148,16 @@
                 <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
                 <polyline points="9 22 9 12 15 12 15 22"></polyline>
             </svg>
-            S.I. SSU FINDER
+            SSU-FINDER
         </div>
         <hr>
         <div class="menuItem" onclick="openOverlay('EF-MAP', 'https://ef-map.com/')">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
-                stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="12" cy="10" r="3" />
-                <path d="M12 21.7C17.3 17 20 13 20 10a8 8 0 1 0-16 0c0 3 2.7 6.9 8 11.7z" />
+            <svg xmlns="http://www.w3.org/2000/svg" data-name="Layer 1" viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+                <path d="m23.36.639c-1.303-1.304-3.927-.626-7.799,2.017-1.107-.423-2.308-.656-3.562-.656C6.486,2,2,6.486,2,12c0,1.254.233,2.454.656,3.561C.012,19.433-.667,22.056.64,23.361c.424.425.993.637,1.703.637,1.153,0,2.679-.559,4.562-1.675.496-.294,1.009-.622,1.533-.979,1.107.423,2.308.656,3.562.656,5.514,0,10-4.486,10-10,0-1.261-.235-2.469-.664-3.581,2.168-3.166,3.514-6.289,2.024-7.78Zm-1.414,1.414c.319.319-.142,1.917-1.665,4.347-.717-1.057-1.63-1.969-2.687-2.685,3.02-1.899,4.233-1.782,4.352-1.662Zm-9.946,1.947c3.044,0,5.696,1.709,7.048,4.217-1.236,1.699-2.89,3.667-5.027,5.804-1.944,1.944-3.937,3.669-5.799,5.029-2.511-1.351-4.221-4.004-4.221-7.049,0-4.411,3.589-8,8-8Zm-6.114,16.602c-2.689,1.593-3.735,1.441-3.832,1.344-.122-.122-.235-1.337,1.661-4.352.717,1.059,1.632,1.974,2.691,2.691-.175.11-.349.216-.52.317Zm14.114-8.602c0,4.411-3.589,8-8,8-.522,0-1.033-.051-1.527-.147,1.627-1.271,3.315-2.771,4.962-4.418,1.312-1.312,2.935-3.095,4.413-4.989.099.503.152,1.022.152,1.554Z"/>
             </svg>
-            EF-MAP (External)
+            EF-MAP.COM
         </div>
-        <div class="menuItem" onclick="openOverlay('EVE|DATACORE', 'https://evedataco.re/explore/characters')">
+        <div class="menuItem" onclick="openOverlay('EVE|DATACORE', 'https://evedataco.re/explore/characters/')">
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
                 stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
                 <rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect>
@@ -77,17 +171,7 @@
                 <line x1="1" y1="9" x2="4" y2="9"></line>
                 <line x1="1" y1="14" x2="4" y2="14"></line>
             </svg>
-            EVE|DATACORE (External)
-        </div>
-        <div class="menuItem" onclick="openOverlay('Accluster Sniffer', 'https://accluster.net/ef/sniffer/')">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
-                stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
-                <path
-                    d="M2 16.1A5 5 0 0 1 5.9 20M2 12.05A9 9 0 0 1 9.95 20M2 8V6a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-6">
-                </path>
-                <line x1="2" y1="20" x2="2.01" y2="20"></line>
-            </svg>
-            Accluster Sniffer (External)
+            EVE|DATACO.RE
         </div>
         <div class="menuItem" onclick="openOverlay('Alpha Strike', 'https://frontier.alpha-strike.space/')">
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
@@ -98,25 +182,32 @@
                 <line x1="14.47" y1="14.48" x2="20" y2="20"></line>
                 <line x1="8.12" y1="8.12" x2="12" y2="12"></line>
             </svg>
-            Alpha Strike (External)
+            ALPHA-STRIKE.SPACE
+        </div>
+        <hr>
+        <div class="menuItem" id="noCustom">
+            <span style="color:#777777">No custom items yet. Click the + button in the titlebar to add your own links.</span>
         </div>
     </div>
 
     <!-- floating button removed; control moved into titlebar -->
 
     <!-- Modal popup for adding custom menu items -->
-    <div id="customModal"
-        style="display:none; position:fixed; right:12px; bottom:48px; width:200px; background:rgba(6,10,14,0.96); border:1px solid rgba(255,255,255,0.04); padding:12px; border-radius:8px; z-index:60; box-shadow:0 8px 24px rgba(0,0,0,0.6)">
+    <div id="customModal">
         <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
-            <div style="font-size:13px; color:#9fb3c8;">Add custom menu item</div>
-            <button id="closeCustomModal"
-                style="background:transparent; border:none; color:#b8c7d3; cursor:pointer">✖</button>
+            <div style="font-size:13px; color:#9fb3c8;">Add menu item</div>
         </div>
         <div style="display:flex; flex-direction:column; gap:8px;">
             <input id="modalCustomName" placeholder="Name"
                 style="padding:8px; background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.04); color:inherit" />
-            <input id="modalCustomUrl" placeholder="https://..."
+            <input id="modalCustomUrl" placeholder="'http://..' or 'test.html'"
                 style="padding:8px; background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.04); color:inherit" />
+            <label style="display:flex; align-items:center; gap:8px; font-size:12px; color:#b8c7d3;">
+                <input id="modalIsRemote" type="checkbox" />
+                <span class="tooltip">Try borderless mode
+                    <span class="tooltiptext">Disabled CORS, may<br>not work with all sites</span>
+                </span>
+            </label>
             <div style="display:flex; gap:8px; justify-content:flex-end;">
                 <button id="modalAddBtn"
                     style="padding:6px 10px; background:#2b6b88; border:none; color:white; border-radius:6px; cursor:pointer">Add</button>
@@ -182,12 +273,19 @@
             // insert before the custom UI area (find .menu and append)
             const menu = document.querySelector('.menu')
             // remove previous custom items (data-custom)
-            menu.querySelectorAll('[data-custom="1"]').forEach(n => n.remove())
+            if (menu) menu.querySelectorAll('[data-custom="1"]').forEach(n => n.remove())
             list.forEach(item => {
                 const el = createMenuItemElement(item)
                 el.setAttribute('data-custom', '1')
-                menu.appendChild(el)
+                if (menu) menu.appendChild(el)
             })
+
+            // show/hide the "no custom" placeholder
+            const noCustom = document.getElementById('noCustom')
+            if (noCustom) {
+                if (list.length > 0) noCustom.style.display = 'none'
+                else noCustom.style.display = ''
+            }
         }
 
         function addCustomItem(name, url, isRemote = true) {
@@ -210,25 +308,47 @@
         document.addEventListener('DOMContentLoaded', () => {
             renderCustomItems()
             const openBtn = document.getElementById('openCustomEditor')
+            const noCustomBtn = document.getElementById('noCustom')
             const modal = document.getElementById('customModal')
-            const closeModal = document.getElementById('closeCustomModal')
             const cancelBtn = document.getElementById('modalCancelBtn')
             const addBtn = document.getElementById('modalAddBtn')
             const nameIn = document.getElementById('modalCustomName')
             const urlIn = document.getElementById('modalCustomUrl')
+            const remoteIn = document.getElementById('modalIsRemote')
 
-            function showModal() { modal.style.display = 'block'; nameIn.focus() }
-            function hideModal() { modal.style.display = 'none'; nameIn.value = ''; urlIn.value = '' }
+            const menuEl = document.querySelector('.menu')
+
+            function showModal() {
+                if (!modal) return
+                modal.style.display = 'block'
+                // allow CSS transition by adding class after display set
+                requestAnimationFrame(() => modal.classList.add('open'))
+                nameIn.focus()
+                if (remoteIn) remoteIn.checked = false
+                if (menuEl) menuEl.classList.add('dimmed')
+            }
+
+            function hideModal() {
+                if (!modal) return
+                modal.classList.remove('open')
+                // wait for the close transition then hide
+                setTimeout(() => { modal.style.display = 'none' }, 180)
+                nameIn.value = ''
+                urlIn.value = ''
+                if (remoteIn) remoteIn.checked = false
+                if (menuEl) menuEl.classList.remove('dimmed')
+            }
 
             if (openBtn) openBtn.addEventListener('click', showModal)
-            if (closeModal) closeModal.addEventListener('click', hideModal)
+            if (noCustomBtn) noCustomBtn.addEventListener('click', showModal)
             if (cancelBtn) cancelBtn.addEventListener('click', hideModal)
 
             if (addBtn) addBtn.addEventListener('click', () => {
                 const name = nameIn.value.trim()
                 const url = urlIn.value.trim()
                 if (!name || !url) return
-                addCustomItem(name, url, url.startsWith('http'))
+                const isRemote = !remoteIn.checked
+                addCustomItem(name, url, isRemote)
                 hideModal()
             })
         })
