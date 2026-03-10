@@ -6,13 +6,12 @@ body {
 
 body {
     margin: 0;
-    background: rgba(8, 12, 18, 0.92);
-    border: 1px solid rgba(255, 255, 255, 0.05);
     color: #b8c7d3;
     font-family: "EveSans", "Segoe UI", sans-serif;
     -webkit-font-smoothing: antialiased;
     display: flex;
     flex-direction: column;
+    opacity: 1;
 }
 
 /* ===== TITLE BAR ===== */
@@ -23,14 +22,15 @@ body {
     align-items: center;
     justify-content: space-between;
     padding: 0 8px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    background: rgb(8, 12, 18);
+    border-bottom: 1px solid  rgb(40, 60, 80);
     -webkit-app-region: drag;
 }
 
 .title {
     font-size: 13px;
     font-weight: bold;
-    letter-spacing: 1.5px;
+    letter-spacing: 1px;
     color: #9fb3c8;
 }
 
@@ -57,23 +57,28 @@ body {
     flex: 1 1 auto;
     overflow-y: auto;
     padding-top: 6px;
+    background: rgb(14, 21, 32);
 }
 
 .menuItem {
     display: flex;
     align-items: center;
     gap: 13px;
-    padding: 10px 14px;
+    padding: 6px 12px;
     cursor: pointer;
     font-size: 13px;
     letter-spacing: 0.6px;
 }
 
 .menuItem:hover {
-    background: rgba(255, 255, 255, 0.04);
+    background: rgb(20, 20, 20);
     color: #ffffff;
 }
-.menu.dimmed { filter: brightness(.15); transition: filter 150ms ease; }
+
+.menu.dimmed {
+    filter: brightness(.15);
+    transition: filter 150ms ease;
+}
 
 .icon {
     width: 18px;
@@ -82,23 +87,133 @@ body {
 }
 
 hr {
-    border: 1px solid rgba(255, 255, 255, 0.05);
+    border: none;
+    border-bottom: 1px solid  rgb(40, 60, 80);
 }
 
 /* EVE-like slim dark scrollbar for the menu */
 .menu::-webkit-scrollbar {
     width: 10px;
 }
+
 .menu::-webkit-scrollbar-track {
     background: transparent;
 }
+
 .menu::-webkit-scrollbar-thumb {
-    background: linear-gradient(180deg, rgba(96,150,185,0.20), rgba(60,100,125,0.12));
+    background: linear-gradient(180deg, rgba(96, 150, 185, 0.20), rgba(60, 100, 125, 0.12));
     border-radius: 8px;
-    border: 2px solid rgba(8,12,18,0.0);
-    box-shadow: inset 0 0 0 1px rgba(255,255,255,0.02);
+    border: 2px solid rgba(8, 12, 18, 0.0);
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.02);
 }
+
 .menu::-webkit-scrollbar-thumb:hover {
-    background: linear-gradient(180deg, rgba(120,190,220,0.30), rgba(80,140,170,0.16));
+    background: linear-gradient(180deg, rgba(120, 190, 220, 0.30), rgba(80, 140, 170, 0.16));
 }
-.menu::-webkit-scrollbar-corner { background: transparent }
+
+.menu::-webkit-scrollbar-corner {
+    background: transparent
+}
+
+/* Dim and disable interaction for the menu while modal is open */
+.menu.dimmed {
+    filter: brightness(.15);
+    transition: filter 150ms ease;
+    pointer-events: none;
+    user-select: none;
+    opacity: 1;
+}
+
+/* Make the custom modal more visible and animated */
+#customModal {
+    display: none;
+    position: fixed;
+    left: 10px;
+    top: 42px;
+    width: 165px;
+    background: rgba(12, 16, 20, 0.98);
+    border: 1px solid rgba(60, 140, 180, 0.14);
+    padding: 12px;
+    z-index: 120;
+    box-shadow: 0 18px 60px rgba(0, 0, 0, 0.65), 0 0 18px rgba(60, 140, 180, 0.08);
+    transform-origin: left top;
+    transform: translateY(-8px) scale(0.98);
+    opacity: 0;
+    transition: transform 160ms ease, opacity 160ms ease, box-shadow 160ms ease;
+}
+
+#customModal.open {
+    display: block;
+    transform: translateY(0) scale(1);
+    opacity: 1;
+    box-shadow: 0 26px 80px rgba(0, 0, 0, 0.72), 0 0 28px rgba(60, 140, 180, 0.12);
+}
+
+/* Accent the header and action button inside the modal for visibility */
+#customModal>div:first-child {
+    color: #bfe6ff
+}
+
+#modalAddBtn {
+    background: linear-gradient(180deg, #2b6b88, #1f556f)
+}
+
+/* Styled checkbox matching modal inputs */
+#modalIsRemote {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 14px;
+    height: 14px;
+    border: 1px solid rgba(255, 255, 255, 0.04);
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: 3px;
+    display: inline-block;
+    vertical-align: middle;
+    position: relative;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.02);
+    cursor: pointer;
+}
+
+#modalIsRemote:focus {
+    outline: 1px solid rgba(47, 160, 200, 0.15)
+}
+
+#modalIsRemote:checked {
+    background: linear-gradient(180deg, #2fa9d9, #176079);
+    border-color: rgba(40, 120, 160, 0.9);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12);
+}
+
+/* no checkmark glyph — color indicates state */
+
+/* Tooltip for informative labels */
+.tooltip {
+    position: relative;
+    border-bottom: 1px dashed rgba(185, 199, 211, 0.35);
+    cursor: help;
+    display: inline-block;
+}
+
+.tooltip .tooltiptext {
+    visibility: hidden;
+    opacity: 0;
+    position: absolute;
+    left: 0;
+    bottom: 125%;
+    transform: translateY(-6px);
+    background: rgba(6, 10, 14, 0.95);
+    color: #cfe9f8;
+    padding: 6px 8px;
+    border-radius: 6px;
+    white-space: nowrap;
+    font-size: 11px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6);
+    transition: opacity 120ms ease, transform 120ms ease;
+    z-index: 220;
+}
+
+.tooltip:hover .tooltiptext {
+    visibility: visible;
+    opacity: 1;
+    transform: translateY(0);
+}

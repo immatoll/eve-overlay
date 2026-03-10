@@ -6,10 +6,9 @@ body {
 
 body {
     margin: 0;
-    background: rgba(8, 12, 18, 0.92);
     font-family: "EveSans", sans-serif;
     color: #cfd8dc;
-    border: 1px solid rgba(255, 255, 255, 0.10);
+    opacity: 1;
 }
 
 /* ===== TITLE BAR ===== */
@@ -19,8 +18,8 @@ body {
     align-items: center;
     justify-content: space-between;
     padding: 0 8px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.10);
-    background: linear-gradient(180deg, rgba(255,255,255,0.02), transparent);
+    background: rgb(8, 12, 18);
+    border-bottom: 1px solid  rgb(40, 60, 8);
     -webkit-app-region: drag;
 }
 
@@ -55,7 +54,7 @@ body {
     left: 0;
     right: 0;
     bottom: 0;
-    margin: 2px;
+    margin: 0;
     box-sizing: border-box;
     overflow: hidden;
 }
@@ -66,7 +65,6 @@ body {
     height: 100%;
     border: none;
     overflow: hidden;
-    opacity: 0.7;
 }
 
 /* ===== RESIZING ===== */
@@ -95,6 +93,7 @@ body {
 
 /* A small triangle (size-grip) shown at bottom-right when hovering the handle */
 .resize-triangle {
+    display: none;
     width: 0;
     height: 0;
     border-left: 12px solid transparent;

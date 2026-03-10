@@ -28,8 +28,8 @@ function createOverlayWindow(opts = {}) {
   // Build options conditionally: remote URLs get a framed window so OS controls work;
   // local overlay UI uses a frameless window with custom chrome.
   const overlay = new BrowserWindow({
-    width: 800,
-    height: 600,
+    width: 600,
+    height: 400,
     minWidth: 200,
     minHeight: 150,
     frame: !!isRemote,              // framed if loading a remote URL

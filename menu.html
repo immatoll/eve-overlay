@@ -5,102 +5,6 @@
     <meta charset="UTF-8">
     <link rel="stylesheet" href="css/fonts.css">
     <link rel="stylesheet" href="css/menu.css">
-    <style>
-        /* Dim and disable interaction for the menu while modal is open */
-        .menu.dimmed {
-            filter: brightness(.15);
-            transition: filter 150ms ease;
-            pointer-events: none;
-            user-select: none;
-            opacity: 1;
-        }
-
-        /* Make the custom modal more visible and animated */
-        #customModal {
-            display: none;
-            position: fixed;
-            left: 10px;
-            top: 42px;
-            width: 165px;
-            background: rgba(12,16,20,0.98);
-            border: 1px solid rgba(60,140,180,0.14);
-            padding: 12px;
-            z-index: 120;
-            box-shadow: 0 18px 60px rgba(0,0,0,0.65), 0 0 18px rgba(60,140,180,0.08);
-            transform-origin: left top;
-            transform: translateY(-8px) scale(0.98);
-            opacity: 0;
-            transition: transform 160ms ease, opacity 160ms ease, box-shadow 160ms ease;
-        }
-
-        #customModal.open {
-            display: block;
-            transform: translateY(0) scale(1);
-            opacity: 1;
-            box-shadow: 0 26px 80px rgba(0,0,0,0.72), 0 0 28px rgba(60,140,180,0.12);
-        }
-
-        /* Accent the header and action button inside the modal for visibility */
-        #customModal > div:first-child { color: #bfe6ff }
-        #modalAddBtn { background: linear-gradient(180deg,#2b6b88,#1f556f) }
-            /* Styled checkbox matching modal inputs */
-            #modalIsRemote {
-                -webkit-appearance: none;
-                appearance: none;
-                width: 14px;
-                height: 14px;
-                border: 1px solid rgba(255,255,255,0.04);
-                background: rgba(255,255,255,0.02);
-                border-radius: 3px;
-                display: inline-block;
-                vertical-align: middle;
-                position: relative;
-                box-shadow: inset 0 1px 0 rgba(255,255,255,0.02);
-                cursor: pointer;
-            }
-
-            #modalIsRemote:focus { outline: 1px solid rgba(47,160,200,0.15) }
-
-            #modalIsRemote:checked {
-                background: linear-gradient(180deg,#2fa9d9,#176079);
-                border-color: rgba(40,120,160,0.9);
-                box-shadow: inset 0 1px 0 rgba(255,255,255,0.12);
-            }
-
-            /* no checkmark glyph — color indicates state */
-
-            /* Tooltip for informative labels */
-            .tooltip {
-                position: relative;
-                border-bottom: 1px dashed rgba(185,199,211,0.35);
-                cursor: help;
-                display: inline-block;
-            }
-
-            .tooltip .tooltiptext {
-                visibility: hidden;
-                opacity: 0;
-                position: absolute;
-                left: 0;
-                bottom: 125%;
-                transform: translateY(-6px);
-                background: rgba(6,10,14,0.95);
-                color: #cfe9f8;
-                padding: 6px 8px;
-                border-radius: 6px;
-                white-space: nowrap;
-                font-size: 11px;
-                box-shadow: 0 8px 30px rgba(0,0,0,0.6);
-                transition: opacity 120ms ease, transform 120ms ease;
-                z-index: 220;
-            }
-
-            .tooltip:hover .tooltiptext {
-                visibility: visible;
-                opacity: 1;
-                transform: translateY(0);
-            }
-    </style>
 </head>
 
 <body>
@@ -122,7 +26,6 @@
             <svg class="windowBtn" onclick="minimize()" viewBox="0 0 24 24">
                 <rect x="4" y="11" width="16" height="2" fill="#cfd8dc" />
             </svg>
-
 
             <svg class="windowBtn" onclick="closeWin()" viewBox="0 0 24 24">
                 <line x1="5" y1="5" x2="19" y2="19" stroke="#cfd8dc" stroke-width="2" />
@@ -152,8 +55,10 @@
         </div>
         <hr>
         <div class="menuItem" onclick="openOverlay('EF-MAP', 'https://ef-map.com/')">
-            <svg xmlns="http://www.w3.org/2000/svg" data-name="Layer 1" viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
-                <path d="m23.36.639c-1.303-1.304-3.927-.626-7.799,2.017-1.107-.423-2.308-.656-3.562-.656C6.486,2,2,6.486,2,12c0,1.254.233,2.454.656,3.561C.012,19.433-.667,22.056.64,23.361c.424.425.993.637,1.703.637,1.153,0,2.679-.559,4.562-1.675.496-.294,1.009-.622,1.533-.979,1.107.423,2.308.656,3.562.656,5.514,0,10-4.486,10-10,0-1.261-.235-2.469-.664-3.581,2.168-3.166,3.514-6.289,2.024-7.78Zm-1.414,1.414c.319.319-.142,1.917-1.665,4.347-.717-1.057-1.63-1.969-2.687-2.685,3.02-1.899,4.233-1.782,4.352-1.662Zm-9.946,1.947c3.044,0,5.696,1.709,7.048,4.217-1.236,1.699-2.89,3.667-5.027,5.804-1.944,1.944-3.937,3.669-5.799,5.029-2.511-1.351-4.221-4.004-4.221-7.049,0-4.411,3.589-8,8-8Zm-6.114,16.602c-2.689,1.593-3.735,1.441-3.832,1.344-.122-.122-.235-1.337,1.661-4.352.717,1.059,1.632,1.974,2.691,2.691-.175.11-.349.216-.52.317Zm14.114-8.602c0,4.411-3.589,8-8,8-.522,0-1.033-.051-1.527-.147,1.627-1.271,3.315-2.771,4.962-4.418,1.312-1.312,2.935-3.095,4.413-4.989.099.503.152,1.022.152,1.554Z"/>
+            <svg xmlns="http://www.w3.org/2000/svg" data-name="Layer 1" viewBox="0 0 24 24" width="20" height="20"
+                fill="currentColor">
+                <path
+                    d="m23.36.639c-1.303-1.304-3.927-.626-7.799,2.017-1.107-.423-2.308-.656-3.562-.656C6.486,2,2,6.486,2,12c0,1.254.233,2.454.656,3.561C.012,19.433-.667,22.056.64,23.361c.424.425.993.637,1.703.637,1.153,0,2.679-.559,4.562-1.675.496-.294,1.009-.622,1.533-.979,1.107.423,2.308.656,3.562.656,5.514,0,10-4.486,10-10,0-1.261-.235-2.469-.664-3.581,2.168-3.166,3.514-6.289,2.024-7.78Zm-1.414,1.414c.319.319-.142,1.917-1.665,4.347-.717-1.057-1.63-1.969-2.687-2.685,3.02-1.899,4.233-1.782,4.352-1.662Zm-9.946,1.947c3.044,0,5.696,1.709,7.048,4.217-1.236,1.699-2.89,3.667-5.027,5.804-1.944,1.944-3.937,3.669-5.799,5.029-2.511-1.351-4.221-4.004-4.221-7.049,0-4.411,3.589-8,8-8Zm-6.114,16.602c-2.689,1.593-3.735,1.441-3.832,1.344-.122-.122-.235-1.337,1.661-4.352.717,1.059,1.632,1.974,2.691,2.691-.175.11-.349.216-.52.317Zm14.114-8.602c0,4.411-3.589,8-8,8-.522,0-1.033-.051-1.527-.147,1.627-1.271,3.315-2.771,4.962-4.418,1.312-1.312,2.935-3.095,4.413-4.989.099.503.152,1.022.152,1.554Z" />
             </svg>
             EF-MAP.COM
         </div>
@@ -186,7 +91,8 @@
         </div>
         <hr>
         <div class="menuItem" id="noCustom">
-            <span style="color:#777777">No custom items yet. Click the + button in the titlebar to add your own links.</span>
+            <span style="color:#777777">No custom items yet. Click the + button in the titlebar to add your own
+                links.</span>
         </div>
     </div>
 
@@ -204,8 +110,8 @@
                 style="padding:8px; background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.04); color:inherit" />
             <label style="display:flex; align-items:center; gap:8px; font-size:12px; color:#b8c7d3;">
                 <input id="modalIsRemote" type="checkbox" />
-                <span class="tooltip">Try borderless mode
-                    <span class="tooltiptext">Disabled CORS, may<br>not work with all sites</span>
+                <span class="tooltip">Borderless
+                    <span class="tooltiptext">Disables CORS, may<br>not work with all sites</span>
                 </span>
             </label>
             <div style="display:flex; gap:8px; justify-content:flex-end;">
@@ -246,7 +152,6 @@
             `
             el.querySelector('.customLabel').textContent = item.name
             el.addEventListener('click', (e) => {
-                // avoid triggering when clicking remove button
                 if (e.target && e.target.classList && e.target.classList.contains('removeBtn')) return
                 openOverlay(item.name, item.url, !!item.isRemote)
             })
@@ -270,9 +175,7 @@
 
         function renderCustomItems() {
             const list = loadCustomItems()
-            // insert before the custom UI area (find .menu and append)
             const menu = document.querySelector('.menu')
-            // remove previous custom items (data-custom)
             if (menu) menu.querySelectorAll('[data-custom="1"]').forEach(n => n.remove())
             list.forEach(item => {
                 const el = createMenuItemElement(item)
@@ -280,7 +183,6 @@
                 if (menu) menu.appendChild(el)
             })
 
-            // show/hide the "no custom" placeholder
             const noCustom = document.getElementById('noCustom')
             if (noCustom) {
                 if (list.length > 0) noCustom.style.display = 'none'
@@ -304,7 +206,6 @@
             renderCustomItems()
         }
 
-        // wire the popup UI
         document.addEventListener('DOMContentLoaded', () => {
             renderCustomItems()
             const openBtn = document.getElementById('openCustomEditor')
@@ -321,7 +222,6 @@
             function showModal() {
                 if (!modal) return
                 modal.style.display = 'block'
-                // allow CSS transition by adding class after display set
                 requestAnimationFrame(() => modal.classList.add('open'))
                 nameIn.focus()
                 if (remoteIn) remoteIn.checked = false
@@ -331,7 +231,6 @@
             function hideModal() {
                 if (!modal) return
                 modal.classList.remove('open')
-                // wait for the close transition then hide
                 setTimeout(() => { modal.style.display = 'none' }, 180)
                 nameIn.value = ''
                 urlIn.value = ''

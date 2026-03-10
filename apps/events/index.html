@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Intel Feed</title>
+
+    <style>
+        html,
+        body {
+            height: 100%;
+        }
+
+        body {
+            margin: 0;
+            font-family: "EveSans", sans-serif;
+            color: #cfd8dc;
+            background: rgba(14, 21, 32);
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            display: flex;
+            align-items: center;
+            font-size: 13px;
+            gap: 10px;
+            padding: 5px 12px;
+            background: rgb(23, 34, 52);
+            border-bottom: 1px solid rgb(40, 60, 80);
+            flex: 0 0 auto;
+        }
+
+        #events {
+            flex: 1 1 auto;
+            overflow-y: scroll;
+            overflow-x: auto;
+            scrollbar-color: rgb(60, 80, 100) rgb(23, 34, 52);
+            scrollbar-width: thin;
+        }
+
+        #events::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        #events::-webkit-scrollbar-track {
+            background: rgb(23, 34, 52);
+        }
+
+        #events::-webkit-scrollbar-thumb {
+            background: rgb(60, 80, 100);
+            border-radius: 5px;
+        }
+
+        #events::-webkit-scrollbar-thumb:hover {
+            background: rgb(80, 100, 120);
+        }
+
+        footer {
+            display: flex;
+            align-items: center;
+            font-size: 13px;
+            gap: 10px;
+            padding: 5px 12px;
+            background: rgb(23, 34, 52);
+            border-top: 1px solid rgb(40, 60, 80);
+            flex: 0 0 auto;
+        }
+
+        #searchBox {
+            padding: 4px 4px;
+            border: 1px solid rgb(40, 60, 80);
+            background: rgba(14, 21, 32);
+            color: #cfd8dc;
+            width: 100px;
+            font-size: 13px;
+            font-family: inherit;
+        }
+
+        #searchBox::placeholder {
+            color: #666;
+        }
+
+        #searchBox:focus {
+            outline: none;
+            border-color: rgb(100, 150, 200);
+            background: rgba(0, 0, 0, 0.5);
+        }
+
+        #eventTypeFilter {
+            padding: 4px 4px;
+            border: 1px solid rgb(40, 60, 80);
+            background: rgba(14, 21, 32);
+            color: #cfd8dc;
+            font-size: 13px;
+            font-family: inherit;
+        }
+
+        #eventTypeFilter:focus {
+            outline: none;
+            border-color: rgb(100, 150, 200);
+            background: rgba(0, 0, 0, 0.5);
+        }
+
+        .event.hidden {
+            display: none;
+        }
+
+        #statusDot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: red;
+        }
+
+        #statusText {
+            font-size: 13px;
+        }
+
+        .event {
+            font-size: 12px;
+            padding: 10px 12px;
+            border-bottom: 1px dotted rgb(40, 40, 40);
+            display: flex;
+            align-items: center;
+            color: #ffffff;
+            gap: 6px;
+            white-space: nowrap;
+            overflow-x: auto;
+        }
+
+        .event svg {
+            flex-shrink: 0;
+        }
+
+        pre {
+            margin: 6px 0 0 0;
+            white-space: pre-wrap;
+        }
+    </style>
+    <link rel="stylesheet" href="../../css/fonts.css">
+</head>
+
+<body>
+    <header>
+        Filter:
+        <select id="eventTypeFilter">
+            <option value="">All Events</option>
+            <option value="item_transfer">Item Transfer</option>
+            <option value="structure_changed">State Change</option>
+        </select>
+
+        <input type="text" id="searchBox" placeholder="Search" style="margin-left:auto;">
+    </header>
+
+    <div id="events"></div>
+
+    <footer>
+        <div style="align-items: center; display: flex; gap: 6px;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16c0 1.1.9 2 2 2h12a2 2 0 0 0 2-2V8l-6-6z" />
+                <path d="M14 3v5h5M16 13H8M16 17H8M10 9H8" />
+            </svg>
+            <span id="eventCounter">0</span>
+        </div>
+        <div style="align-items: center; display: flex; gap: 6px;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                <circle cx="9" cy="7" r="4"></circle>
+                <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+            </svg>
+            <span id="connections">0</span>
+        </div>
+        <div style="margin-left: auto; display:flex;gap:6px;align-items: center; ">
+            <div id="statusText">disconnected</div>
+            <div id="statusDot"></div>
+            
+        </div>
+    </footer>
+
+    <script>
+
+        let ws
+        let reconnectDelay = 2000
+        let eventCount = 0
+        let currentSearchQuery = ""
+        let currentEventTypeFilter = ""
+
+        const filteredTypes = new Set(["ping", "network_node_change", "assembly_created", "character_created"])
+
+        const dot = document.getElementById("statusDot")
+        const statusText = document.getElementById("statusText")
+        const container = document.getElementById("events")
+        const connectionEl = document.getElementById("connections")
+        const eventCounterEl = document.getElementById("eventCounter")
+        const searchBox = document.getElementById("searchBox")
+        const eventTypeFilter = document.getElementById("eventTypeFilter")
+
+        const queryString = window.location.search;
+        const urlParams = new URLSearchParams(queryString);
+        const debug = urlParams.get('debug');
+
+        const WS_URL = debug ? "ws://localhost:8765" : "wss://ef-map.com/ws/universe-events"
+
+        function setStatus(state) {
+            if (state === "connected") {
+                dot.style.background = "limegreen"
+                statusText.textContent = "connected"
+            }
+            if (state === "connecting") {
+                dot.style.background = "orange"
+                statusText.textContent = "connecting"
+            }
+            if (state === "disconnected") {
+                dot.style.background = "red"
+                statusText.textContent = "disconnected"
+            }
+        }
+
+        function filterEvents() {
+            const events = container.querySelectorAll(".event")
+            events.forEach(event => {
+                const text = event.textContent.toLowerCase()
+                const eventType = event.dataset.eventType || ""
+                
+                const matchesSearch = !currentSearchQuery || text.includes(currentSearchQuery.toLowerCase())
+                
+                let matchesType = !currentEventTypeFilter
+                if (currentEventTypeFilter) {
+                    if (currentEventTypeFilter === "structure_changed") {
+                        matchesType = eventType === "structure_anchored" || eventType === "structure_offline" || eventType === "structure_online"
+                    } else {
+                        matchesType = eventType === currentEventTypeFilter
+                    }
+                }
+                
+                if (matchesSearch && matchesType) {
+                    event.classList.remove("hidden")
+                } else {
+                    event.classList.add("hidden")
+                }
+            })
+        }
+
+        searchBox.addEventListener("input", (e) => {
+            currentSearchQuery = e.target.value
+            filterEvents()
+        })
+
+        eventTypeFilter.addEventListener("change", (e) => {
+            currentEventTypeFilter = e.target.value
+            filterEvents()
+        })
+
+        function connect() {
+
+            setStatus("connecting")
+
+            ws = new WebSocket(WS_URL)
+
+            ws.onopen = () => {
+                setStatus("connected")
+                reconnectDelay = 2000
+            }
+
+            ws.onmessage = (msg) => {
+
+                let data
+
+                try {
+                    data = JSON.parse(msg.data)
+                } catch {
+                    return
+                }
+
+                // filter unwanted types
+                if (filteredTypes.has(data.type)) {
+                    return
+                }
+
+                // special handler for connection counter
+                if (data.type === "connection_count") {
+                    updateConnectionCount(data.connections)
+                    return
+                }
+
+                renderEvent(data)
+            }
+
+            ws.onclose = () => {
+                setStatus("disconnected")
+                scheduleReconnect()
+            }
+
+            ws.onerror = () => {
+                ws.close()
+            }
+        }
+
+        function updateConnectionCount(count) {
+            connectionEl.textContent = count
+        }
+
+        function renderEvent(data) {
+            console.log(data)
+            eventCount++
+            eventCounterEl.textContent = eventCount
+
+            const time = data.timestamp
+                ? new Date(data.timestamp).toLocaleTimeString()
+                : ""
+
+            const el = document.createElement("div")
+            el.className = "event"
+            el.dataset.eventType = data.type
+
+            if(data.type === "structure_anchored" || data.type === "structure_offline" || data.type === "structure_online") {
+                el.innerHTML = `
+                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18.36 6.64a9 9 0 1 1-12.73 0"></path><line x1="12" y1="2" x2="12" y2="12"></line></svg>
+                    ${time}
+                    -
+                    ${data.data.ownerName || "Unknown Owner"} [CO86]
+                    anchored
+                    ${data.data.assemblyType || "Unknown assembly"}
+                    in
+                    ${data.system_id || "Unknown System"}
+                    `
+            }
+            else if (data.type === "item_transfer") {
+                el.innerHTML = `
+                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 2.1l4 4-4 4"/><path d="M3 12.2v-2a4 4 0 0 1 4-4h12.8M7 21.9l-4-4 4-4"/><path d="M21 11.8v2a4 4 0 0 1-4 4H4.2"/></svg>
+                    ${time}
+                    -
+                    ${data.data.ownerName || "Unknown Owner"} [CO86]
+                    transferred 
+                    ${data.data.quantity || "0"}x ${data.data.itemName || "Unknown Item"}
+                    in
+                    ${data.system_id || "Unknown System"}
+                `
+            }
+            else if (data.type === "character_created") {
+                el.innerHTML = `
+                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                `
+            }
+            else if (data.type === "connected") {
+                el.innerHTML = `
+                   <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.55a11 11 0 0 1 14.08 0"></path><path d="M1.42 9a16 16 0 0 1 21.16 0"></path><path d="M8.53 16.11a6 6 0 0 1 6.95 0"></path><line x1="12" y1="20" x2="12.01" y2="20"></line></svg>
+                   ${time}
+                    -
+                    ${data.message || "Unknown message"}
+                `
+            }
+            else {
+                el.innerHTML += `
+                        <pre>${JSON.stringify(data, null, 2)}</pre>
+                    `
+            }
+
+
+            /* 
+            el.innerHTML = `
+                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                ${time}
+                `
+            el.innerHTML += `
+                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="10" r="3"/><path d="M12 21.7C17.3 17 20 13 20 10a8 8 0 1 0-16 0c0 3 2.7 6.9 8 11.7z"/></svg>
+                ${data.system_id || "Unknown System"}
+                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                ${data.data.ownerName || "Unknown Owner"} [CO86]
+                `
+
+            if (data.type === "item_transfer") {
+                el.innerHTML += `
+                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"> <path d="M2.5 2v6h6M21.5 22v-6h-6" /><path d="M22 11.5A10 10 0 0 0 3.2 7.2M2 12.5a10 10 0 0 0 18.8 4.2" /></svg>
+                ${data.data.itemName || "Unknown Item"} (${data.data.quantity || "0"})
+                `
+            }
+            else if (data.type === "structure_anchored" || data.type === "structure_offline" || data.type === "structure_online") {
+                el.innerHTML += `
+                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18.36 6.64a9 9 0 1 1-12.73 0"></path><line x1="12" y1="2" x2="12" y2="12"></line></svg>
+                ${data.data.assemblyType || "Unknown assembly"}
+                `
+            }
+            else {
+                el.innerHTML += `
+                    <pre>${JSON.stringify(data, null, 2)}</pre>
+                `
+            }
+
+            */
+
+
+            container.prepend(el)
+
+            // Apply current filters to new event
+            const text = el.textContent.toLowerCase()
+            const eventType = el.dataset.eventType
+            
+            const matchesSearch = !currentSearchQuery || text.includes(currentSearchQuery.toLowerCase())
+            
+            let matchesType = !currentEventTypeFilter
+            if (currentEventTypeFilter) {
+                if (currentEventTypeFilter === "structure_changed") {
+                    matchesType = eventType === "structure_anchored" || eventType === "structure_offline" || eventType === "structure_online"
+                } else {
+                    matchesType = eventType === currentEventTypeFilter
+                }
+            }
+            
+            if (!(matchesSearch && matchesType)) {
+                el.classList.add("hidden")
+            }
+
+            if (container.children.length > 50) {
+                container.removeChild(container.lastChild)
+            }
+
+        }
+
+        function scheduleReconnect() {
+
+            setTimeout(() => {
+                reconnectDelay = Math.min(reconnectDelay * 1.5, 15000)
+                connect()
+            }, reconnectDelay)
+
+        }
+
+        connect()
+
+    </script>
+
+</body>
+
+</html>
