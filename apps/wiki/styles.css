@@ -1,0 +1,140 @@
+body {
+  margin: 0;
+  font-family: "EveSans", sans-serif;
+  font-size: 13px;
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+  letter-spacing: 0.5px;
+  
+}
+
+#sidebar {
+  width: 130px;
+  flex-shrink: 0;              /* don’t shrink in flex layout */
+  background: rgb(23, 34, 52);
+  color: white;
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid rgb(40, 60, 80); /* only right border */
+  padding: 10px;
+  box-sizing: border-box;
+  overflow-y: auto;
+  overflow-x: hidden;           /* prevents horizontal scrollbar */
+  word-wrap: break-word;        /* long text wraps instead of expanding */
+}
+
+#sidebar input {
+  padding: 4px 4px;
+  border: 1px solid rgb(40, 60, 80);
+  background: rgba(14, 21, 32);
+  color: #cfd8dc;
+  width: 100px;
+  font-size: 13px;
+  font-family: inherit;
+  margin-bottom: 10px;
+}
+
+#sidebar input::placeholder {
+  color: #666;
+}
+
+#searchBox::placeholder {
+  color: #666;
+}
+
+#sidebar input::focus {
+  outline: none;
+  border-color: rgb(100, 150, 200);
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.sidebar-item {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 2px;
+}
+
+.sidebar-link {
+  display: block;
+  padding: 5px;
+  color: white;
+  text-decoration: none;
+  border-radius: 3px;
+}
+
+.sidebar-link:hover {
+  background: #34495e;
+}
+
+/* Subsections stacked vertically */
+.subsection {
+  margin-left: 15px;
+}
+
+main {
+  flex: 1;
+  padding: 15px;
+  overflow-y: auto;
+  color: #cfd8dc;
+  background: rgba(14, 21, 32);
+}
+
+/* Markdown headings */
+#content h1 { font-size: 1.8em; margin-bottom: 0.5em; }
+#content h2 { font-size: 1.5em; margin-bottom: 0.4em; }
+#content h3 { font-size: 1.2em; margin-bottom: 0.3em; }
+
+/* Lists */
+#content ul, #content ol {
+  margin-left: 0px;
+  padding-left: 20px;
+}
+
+/* Code blocks */
+#content pre {
+  background: #2d2d2d;
+  color: #f8f8f2;
+  padding: 10px;
+  border-radius: 5px;
+  overflow-x: auto;
+}
+
+#content code {
+  background: #e0e0e0;
+  padding: 2px 4px;
+  border-radius: 3px;
+  font-family: monospace;
+}
+
+#content a {
+  color: #3498db;
+  text-decoration: none;
+}
+
+#content a:hover {
+  color: #ffffff;
+}
+
+#content img {
+  max-width: 100%;
+  height: auto;
+  border: 1px solid rgb(40, 60, 80); 
+}
+
+        #content::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        #content::-webkit-scrollbar-track {
+            background: rgb(23, 34, 52);
+        }
+
+        #content::-webkit-scrollbar-thumb {
+            background: rgb(60, 80, 100);
+            border-radius: 5px;
+        }
+
+        #content::-webkit-scrollbar-thumb:hover {
+            background: rgb(80, 100, 120);
+        }

@@ -37,8 +37,8 @@ function createOverlayWindow(opts = {}) {
     alwaysOnTop: true,
     resizable: true,
     webPreferences: isRemote ? {
-      nodeIntegration: false,
-      contextIsolation: true
+      nodeIntegration: true,
+      contextIsolation: false
     } : {
       nodeIntegration: true,
       contextIsolation: false,

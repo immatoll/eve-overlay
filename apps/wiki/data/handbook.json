@@ -1,0 +1,29 @@
+[
+  {
+    "id": "getting_started",
+    "title": "Getting started",
+    "file": "content/getting_started.md"
+  },
+  {
+    "id": "join_tribe",
+    "title": "Join the tribe",
+    "file": "content/join_tribe.md"
+  },
+  {
+    "id": "features",
+    "title": "App Features",
+    "file": "content/features.md",
+    "children": [
+      {
+        "id": "feature1",
+        "title": "Feature 1",
+        "file": "content/feature1.md"
+      },
+      {
+        "id": "feature2",
+        "title": "Feature 2",
+        "file": "content/feature2.md"
+      }
+    ]
+  }
+]

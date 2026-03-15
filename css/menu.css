@@ -6,12 +6,11 @@ body {
 
 body {
     margin: 0;
-    color: #b8c7d3;
+    color: #cfd8dc;
     font-family: "EveSans", "Segoe UI", sans-serif;
     -webkit-font-smoothing: antialiased;
-    display: flex;
-    flex-direction: column;
-    opacity: 1;
+    opacity: 0.90;
+     letter-spacing: 0.5px;
 }
 
 /* ===== TITLE BAR ===== */
@@ -23,15 +22,19 @@ body {
     justify-content: space-between;
     padding: 0 8px;
     background: rgb(8, 12, 18);
-    border-bottom: 1px solid  rgb(40, 60, 80);
+    border: 1px solid  rgb(40, 60, 80);
     -webkit-app-region: drag;
 }
+
 
 .title {
     font-size: 13px;
     font-weight: bold;
     letter-spacing: 1px;
     color: #9fb3c8;
+    display:inline-flex; 
+    align-items:center;
+    line-height:1;
 }
 
 .windowButtons {
@@ -54,10 +57,18 @@ body {
 /* ===== MENU ===== */
 
 .menu {
-    flex: 1 1 auto;
+
+    position: absolute;
+    top: 33px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: 0;
+    box-sizing: border-box;
     overflow-y: auto;
-    padding-top: 6px;
+    border: 1px solid  rgb(40, 60, 80);
     background: rgb(14, 21, 32);
+    padding-top: 6px;
 }
 
 .menuItem {

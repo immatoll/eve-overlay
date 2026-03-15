@@ -8,7 +8,8 @@ body {
     margin: 0;
     font-family: "EveSans", sans-serif;
     color: #cfd8dc;
-    opacity: 1;
+    opacity: 0.95;
+    letter-spacing: 0.5px;
 }
 
 /* ===== TITLE BAR ===== */
@@ -19,15 +20,18 @@ body {
     justify-content: space-between;
     padding: 0 8px;
     background: rgb(8, 12, 18);
-    border-bottom: 1px solid  rgb(40, 60, 8);
+    border: 1px solid  rgb(40, 60, 80);
     -webkit-app-region: drag;
 }
 
 .title {
     font-size: 13px;
     font-weight: bold;
-    letter-spacing: 1.5px;
+    letter-spacing: 1px;
     color: #9fb3c8;
+    display:inline-flex; 
+    align-items:center;
+    line-height:1;
 }
 
 .windowButtons {
@@ -57,6 +61,7 @@ body {
     margin: 0;
     box-sizing: border-box;
     overflow: hidden;
+    border: 1px solid  rgb(40, 60, 80);
 }
 
 .content iframe {
@@ -86,18 +91,14 @@ body {
     transition: transform .08s ease, box-shadow .08s ease;
 }
 
-.resize-handle.br:hover {
-    transform: scale(1.08);
-    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.6);
-}
 
 /* A small triangle (size-grip) shown at bottom-right when hovering the handle */
 .resize-triangle {
-    display: none;
+    display: block;
     width: 0;
     height: 0;
-    border-left: 12px solid transparent;
-    border-bottom: 12px solid rgba(255, 255, 255, 0.12);
+    border-left: 8px solid transparent;
+    border-bottom: 8px solid rgba(255, 255, 255, 0.12);
     position: absolute;
     bottom: 8px;
     right: 8px;

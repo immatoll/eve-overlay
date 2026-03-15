@@ -1,0 +1,34 @@
+{
+  "Inner Systems": {
+    "data04": "Ancient Cluster",
+    "data05": "Derelict Bay",
+    "data06": "Derelict Quarry",
+    "data07": "Ruins",
+    "data08": "Stone Cluster"
+  },
+  "Outer Systems": {
+    "data09": "Abandoned Foundry",
+    "data10": "Blue Drift",
+    "data11": "Grove",
+    "data12": "Shall",
+    "data13": "Vestiges"
+  },
+  "Trojan": {
+    "data14": "Drifting Annex",
+    "data15": "Garden"
+  },
+  "Fringe": {
+    "data01": "Crossing",
+    "data02": "Latticeway",
+    "data03": "Tallyport"
+  },
+  "Rift": {
+    "data20": "Rift 05D8",
+    "data21": "Rift F935",
+    "data22": "RIFT 0633",
+    "data23": "Rift F8DA",
+    "data24": "Rift F9BF",
+    "data25": "Rift 0769",
+    "data26": "Rift 0020"
+  }
+}
